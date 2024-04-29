@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
@@ -10,17 +10,20 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
 export class FormBuscaService {
 
   formBusca: FormGroup;
+    fomularioBusca: any;
 
   constructor(private dialog: MatDialog) { 
 
     this.formBusca = new FormGroup({
-      somenteIda: new FormControl(false),
-      origem: new FormControl(null),
-      destino: new FormControl(null),
+      somenteIda: new FormControl(false, [Validators.required]),
+      origem: new FormControl(null, [Validators.required]),
+      destino: new FormControl(null, [Validators.required]),
       tipo: new FormControl("Executiva"),
       adultos: new FormControl(3),
       criancas: new FormControl(0),
-      bebes: new FormControl(1)
+      bebes: new FormControl(1),
+      dataIda: new FormControl(null, [Validators.required]),
+      dataVolta: new FormControl(null, [Validators.required]) 
     })
   }
 
