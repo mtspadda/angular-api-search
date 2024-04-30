@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuscaService } from 'src/app/core/services/form-busca.service';
 import { PassagensService } from 'src/app/core/services/passagens.service';
-import { Passagem } from 'src/app/core/types/type';
+import { DadosBusca, Passagem } from 'src/app/core/types/type';
 
 @Component({
   selector: 'app-busca',
@@ -24,5 +24,13 @@ export class BuscaComponent {
             });
         });
     }
+
+    busca(ev: DadosBusca) {
+        this.passagemService.getPassagens(ev).subscribe(
+          res => {
+            console.log(res)
+            this.passagens = res.resultado
+          })
+      }
   }
   
