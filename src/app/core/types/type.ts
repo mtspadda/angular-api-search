@@ -55,31 +55,6 @@ export interface Passagem{
     orcamento: Orcamento[];
 }
 
-export interface Resultado {
-    paginaAtual: number;
-    ultimaPagina: number;
-    total: number;
-    precoMin: number;
-    precoMax: number;
-    resultado: Passagem[];
-}
-
-export interface Passagem{
-    tipo: string;
-    precoIda: number;
-    precoVolta: number;
-    taxaEmbarque: number;
-    conexoes: number;
-    tempoVoo: number;
-    origem: UnidadeFederativa;
-    destino: UnidadeFederativa;
-    companhia: Companhia;
-    dataIda: Date;
-    dataVolta: Date;
-    total: number;
-    orcamento: Orcamento[];
-}
-
 export interface Companhia{
     id: string;
     nome: string;
@@ -110,6 +85,3 @@ export interface DadosBusca{
     pagina: number;
     porPagina: number;
 }
-
-
-

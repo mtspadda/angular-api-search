@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { FormBuscaService } from 'src/app/core/services/form-busca.service';
 import { PassagensService } from 'src/app/core/services/passagens.service';
 import { DadosBusca, Passagem } from 'src/app/core/types/type';
@@ -9,28 +10,40 @@ import { DadosBusca, Passagem } from 'src/app/core/types/type';
   styleUrls: ['./busca.component.scss'],
 })
 export class BuscaComponent {
-
-    passagens: Passagem[] = [];
-  
-    constructor(private passagemService: PassagensService, private formBuscaService: FormBuscaService){}
-  
+    passagens: Passagem[] = []
+    constructor(
+      private passagensService: PassagensService,
+      private formBuscaService: FormBuscaService
+    ) { }
     ngOnInit(): void {
-      this.formBuscaService.fomularioBusca
-        .subscribe(filtro => {
-          this.passagemService.getPassagens(filtro)
-            .subscribe(res => {
-              this.passagens = res.resultado;
-              console.log(this.passagens);
-            });
-        });
-    }
-
-    busca(ev: DadosBusca) {
-        this.passagemService.getPassagens(ev).subscribe(
-          res => {
-            console.log(res)
-            this.passagens = res.resultado
-          })
+      const buscaPadrao : DadosBusca = {
+        dataIda: new Date().toISOString(),
+        pagina: 1,
+        porPagina: 25,
+        somenteIda: false,
+        passageirosAdultos: 1,
+        tipo: "Executiva"
       }
+      const busca = this.formBuscaService.valid ? this.formBuscaService.obterDadosBusca() : buscaPadrao
+      this.passagensService.getPassagens(busca)
+      .pipe(take(1))
+      .subscribe(
+        res => {
+          this.passagens = res.resultado
+          this.formBuscaService.formBusca.patchValue({
+            precoMin: res.precoMin,
+            precoMax: res.precoMax,
+          })
+        }
+      )
+    }
+    busca(ev: DadosBusca) {
+      this.passagensService.getPassagens(ev).subscribe(
+        res => {
+          console.log(res)
+          this.passagens = res.resultado
+        })
+    }
+  
   }
   
